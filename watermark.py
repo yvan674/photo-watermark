@@ -133,7 +133,7 @@ if __name__ == '__main__':
     else:
         pos_given = False
         while not pos_given:
-            pos = input("Watermark position? br/bl/tr/tl")
+            pos = input("Watermark position? br/bl/tr/tl >> ")
             pos_given = pos in ('br', 'bl', 'tr', 'tl')
 
     do_watermark(in_path, extension, out_path, watermark_path, pos, scale)
