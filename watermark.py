@@ -7,6 +7,8 @@ from pathlib import Path
 from argparse import ArgumentParser
 from tqdm import tqdm
 import sys
+from tkinter import filedialog as fd
+import tkinter as tk
 
 
 PADDING_PROPORTION = 0.2
@@ -102,15 +104,39 @@ def do_watermark(in_path: Path, extension: str, out_path: Path,
 
 if __name__ == '__main__':
     args = parse_args()
+    root = tk.Tk()
+    root.withdraw()
 
-    in_path = args.dir if args.dir is not None \
-        else Path(input("Input dir? >> "))
+    if args.dir is not None:
+        in_path = args.dir
+    else:
+        print("Please select input directory")
+        in_path = Path(fd.askdirectory(initialdir=Path.home(),
+                                       title="Input Directory"))
+        if in_path == Path():
+            sys.exit()
+
     extension = args.ext if args.ext is not None \
         else input("Image extension? >> ")
-    out_path = args.out if args.out is not None \
-        else Path(input("Output dir? >> "))
-    watermark_path = args.watermark if args.watermark is not None \
-        else Path(input("Watermark path? >> "))
+
+    if args.out is not None:
+        out_path = args.out
+    else:
+        print("Please select output directory")
+        out_path = Path(fd.askdirectory(initialdir=in_path,
+                                        mustexist=False,
+                                        title="Output Directory"))
+        if out_path == Path():
+            sys.exit()
+
+    if args.watermark is not None:
+        watermark_path = args.watermark
+    else:
+        print("Please select watermark file")
+        watermark_path = Path(fd.askopenfilename(initialdir=Path.home(),
+                                                 title="Watermark File"))
+        if watermark_path == Path():
+            sys.exit()
 
     scale = args.scale if args.scale is not None \
         else float(input("Scaling? [0.16] >> ") or '0.16')
