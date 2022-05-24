@@ -148,6 +148,7 @@ if __name__ == '__main__':
     assert watermark_path.is_file(), f'Given watermark file {watermark_path} ' \
                                      f'is not a file.'
 
+    pos = None
     if args.br:
         pos = 'br'
     elif args.bl:
@@ -157,9 +158,9 @@ if __name__ == '__main__':
     elif args.tl:
         pos = 'tl'
     else:
-        pos_given = False
-        while not pos_given:
-            pos = input("Watermark position? br/bl/tr/tl >> ")
-            pos_given = pos in ('br', 'bl', 'tr', 'tl')
+        while pos is None:
+            temp_pos = input("Watermark position? br/bl/tr/tl >> ")
+            if temp_pos in ('br', 'bl', 'tr', 'tl'):
+                pos = temp_pos
 
     do_watermark(in_path, extension, out_path, watermark_path, pos, scale)
